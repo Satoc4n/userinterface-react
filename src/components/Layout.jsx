@@ -1,20 +1,18 @@
 import {useState, useEffect} from 'react';
-import {Link, useLocation} from 'react-router-dom';
+import {Link, useLocation, Outlet} from 'react-router-dom';
+import {useTranslation} from 'react-i18next';
 
-/*
-@todo Find a way to share layout components such as SideBar etc. that way we wont have to copy/paste code. Like python {% extends %}
-*/
-
-
-export default function Layout({children}) {
-    const location = useLocation(); // Knows which page you are on to highlight the sidebar
+export default function Layout() {
+    const location = useLocation();
     const [isDarkMode, setIsDarkMode] = useState(false);
 
-    // Check local storage for dark mode preference on load
+    // Translation hook
+    const {t, i18n} = useTranslation();
+
     useEffect(() => {
         const isDark = localStorage.getItem('color-theme') === 'dark' ||
             (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches);
-        setIsDarkMode(isDark); // ??
+        setIsDarkMode(isDark);
         if (isDark) document.documentElement.classList.add('dark');
     }, []);
 
@@ -30,11 +28,17 @@ export default function Layout({children}) {
         }
     };
 
+    // Function to swap languages
+    const toggleLanguage = () => {
+        const newLang = i18n.language === 'en' ? 'de' : 'en';
+        i18n.changeLanguage(newLang);
+    };
+
     return (
         <div
             className="bg-background dark:bg-background-dark text-on-surface dark:text-on-surface-dark font-body min-h-screen antialiased transition-colors duration-200">
 
-            {/* Mobile TopAppBar incase someone decides to use it */}
+            {/* Mobile TopAppBar */}
             <header
                 className="md:hidden flex justify-between items-center w-full px-8 py-3 fixed top-0 z-50 bg-surface-container-lowest dark:bg-background-dark shadow-sm dark:shadow-none transition-colors duration-200">
                 <div className="flex items-center gap-3">
@@ -58,38 +62,62 @@ export default function Layout({children}) {
                     <p className="font-body text-sm font-medium text-on-surface-variant dark:text-on-surface-variant-dark">Precision
                         Care Unit</p>
                 </div>
-                {/* Sidebar Links */}
+
                 <div className="flex-1 flex flex-col gap-1 w-full px-4">
+                    {/* 4. Notice how we use {t('sidebar.dashboard')} instead of typing "Dashboard" ! */}
                     <Link to="/dashboard"
                           className={`flex items-center gap-4 px-4 py-3 rounded-lg transition-colors font-label font-bold text-sm ${location.pathname === '/dashboard' ? 'bg-secondary-container dark:bg-secondary-container-dark text-on-secondary-container dark:text-on-secondary-container-dark' : 'text-on-surface-variant dark:text-on-surface-variant-dark hover:bg-surface-container hover:text-on-surface dark:hover:bg-surface-container-dark dark:hover:text-on-surface-dark'}`}>
                         <span className="material-symbols-outlined"
                               style={{fontVariationSettings: location.pathname === '/dashboard' ? "'FILL' 1" : "'FILL' 0"}}>dashboard</span>
-                        Dashboard
+                        {t('sidebar.dashboard')}
                     </Link>
 
-                    <Link to="/settings"
-                          className={`flex items-center gap-4 px-4 py-3 rounded-lg transition-colors font-label font-bold text-sm ${location.pathname === '/settings' ? 'bg-secondary-container dark:bg-secondary-container-dark text-on-secondary-container dark:text-on-secondary-container-dark' : 'text-on-surface-variant dark:text-on-surface-variant-dark hover:bg-surface-container hover:text-on-surface dark:hover:bg-surface-container-dark dark:hover:text-on-surface-dark'}`}>
+                    <Link to="/search"
+                          className={`flex items-center gap-4 px-4 py-3 rounded-lg transition-colors font-label font-bold text-sm ${location.pathname === '/search' ? 'bg-secondary-container dark:bg-secondary-container-dark text-on-secondary-container dark:text-on-secondary-container-dark' : 'text-on-surface-variant dark:text-on-surface-variant-dark hover:bg-surface-container hover:text-on-surface dark:hover:bg-surface-container-dark dark:hover:text-on-surface-dark'}`}>
                         <span className="material-symbols-outlined"
-                              style={{fontVariationSettings: location.pathname === '/settings' ? "'FILL' 1" : "'FILL' 0"}}>settings</span>
-                        Settings
+                              style={{fontVariationSettings: location.pathname === '/search' ? "'FILL' 1" : "'FILL' 0"}}>search</span>
+                        {t('sidebar.search')}
                     </Link>
 
                     <Link to="/registry"
                           className={`flex items-center gap-4 px-4 py-3 rounded-lg transition-colors font-label font-bold text-sm ${location.pathname === '/registry' ? 'bg-secondary-container dark:bg-secondary-container-dark text-on-secondary-container dark:text-on-secondary-container-dark' : 'text-on-surface-variant dark:text-on-surface-variant-dark hover:bg-surface-container hover:text-on-surface dark:hover:bg-surface-container-dark dark:hover:text-on-surface-dark'}`}>
                         <span className="material-symbols-outlined"
                               style={{fontVariationSettings: location.pathname === '/registry' ? "'FILL' 1" : "'FILL' 0"}}>app_registration</span>
-                        Patient Registry
+                        {t('sidebar.registry')}
+                    </Link>
+
+                    <Link to="/settings"
+                          className={`flex items-center gap-4 px-4 py-3 rounded-lg transition-colors font-label font-bold text-sm ${location.pathname === '/settings' ? 'bg-secondary-container dark:bg-secondary-container-dark text-on-secondary-container dark:text-on-secondary-container-dark' : 'text-on-surface-variant dark:text-on-surface-variant-dark hover:bg-surface-container hover:text-on-surface dark:hover:bg-surface-container-dark dark:hover:text-on-surface-dark'}`}>
+                        <span className="material-symbols-outlined"
+                              style={{fontVariationSettings: location.pathname === '/settings' ? "'FILL' 1" : "'FILL' 0"}}>settings</span>
+                        {t('sidebar.settings')}
                     </Link>
                 </div>
 
-
-                {/* Dark Mode Toggle */}
+                {/* Bottom Toggles Area */}
                 <div className="mt-auto flex flex-col gap-1 w-full pb-8">
+
+                    {/* Language Toggle */}
+                    <div className="flex items-center justify-between px-8 py-3">
+                        <div
+                            className="flex items-center gap-4 text-on-surface-variant dark:text-on-surface-variant-dark">
+                            <span className="material-symbols-outlined">translate</span>
+                            <span className="font-body text-sm font-medium">{t('sidebar.language')}</span>
+                        </div>
+                        <button
+                            onClick={toggleLanguage}
+                            className="w-14 h-8 bg-surface-container-high dark:bg-surface-container-highest-dark rounded-full flex items-center justify-center font-label font-bold text-xs text-primary dark:text-primary-dark shadow-sm hover:brightness-95 transition-all"
+                        >
+                            {i18n.language.toUpperCase()}
+                        </button>
+                    </div>
+
+                    {/* Dark Mode Toggle */}
                     <div className="flex items-center justify-between px-8 py-3">
                         <div
                             className="flex items-center gap-4 text-on-surface-variant dark:text-on-surface-variant-dark">
                             <span className="material-symbols-outlined">contrast</span>
-                            <span className="font-body text-sm font-medium">Theme</span>
+                            <span className="font-body text-sm font-medium">{t('sidebar.theme')}</span>
                         </div>
                         <label htmlFor="theme-toggle"
                                className="flex items-center cursor-pointer relative scale-[0.8] origin-right">
@@ -106,12 +134,13 @@ export default function Layout({children}) {
                             </div>
                         </label>
                     </div>
+
                 </div>
             </nav>
 
-            {/* Main Canvas - This is where the specific pages get injected! */}
+            {/* Main Canvas */}
             <main className="md:ml-64 pt-20 md:pt-0 min-h-screen transition-colors duration-200">
-                {children}
+                <Outlet/>
             </main>
         </div>
     );

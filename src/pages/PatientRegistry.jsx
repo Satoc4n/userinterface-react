@@ -1,5 +1,4 @@
 import {useState} from 'react';
-import Layout from '../components/Layout';
 
 export default function PatientRegistry() {
     const [formData, setFormData] = useState({
@@ -26,56 +25,45 @@ export default function PatientRegistry() {
     minDate.setFullYear(today.getFullYear() - 120);
     const minDateStr = minDate.toISOString().split("T")[0];
 
-    // Real time input validation. Now when we try to input a character or a number where it doesnt belong, we cant continue
     const handleChange = (e) => {
         const {name, value} = e.target;
 
         if (name === 'insuranceNumber') {
             const upperValue = value.toUpperCase();
 
-            // Hard block anything over 12 characters
             if (upperValue.length > 12) return;
 
             let isValid = true;
             let instantError = null;
 
-            // Loop through the entire current string to check EVERY position. We dont loop every x ms, we check the input only in the case of an onChange
-            // Also we block the copy/paste action if the insurance number doesnt match our definition
             for (let i = 0; i < upperValue.length; i++) {
                 const char = upperValue[i];
 
-                // Positions 1-8 and 10-12 MUST be numbers
                 if (i < 8 || i > 8) {
                     if (!/^\d$/.test(char)) {
                         isValid = false;
                         instantError = `Position ${i + 1} must be a number.`;
-                        break; // Stop checking further
+                        break;
                     }
-                }
-                // Position 9 MUST be a letter
-                else if (i === 8) {
+                } else if (i === 8) {
                     if (!/^[A-Z]$/.test(char)) {
                         isValid = false;
                         instantError = `Position 9 must be a letter.`;
-                        break; // Stop checking further
+                        break;
                     }
                 }
             }
 
-            // If they typed the wrong thing, set the error and STOP
-            // We DO NOT update the form data, effectively blocking their keystroke
             if (!isValid) {
                 setErrors(prev => ({...prev, insuranceNumber: instantError}));
                 return;
             }
 
-            // Clear the error and update the box if the input matches our definition
             setErrors(prev => ({...prev, insuranceNumber: null}));
             setFormData(prev => ({...prev, [name]: upperValue}));
             return;
         }
 
-        // Clear general errors when typing in other fields
         if (errors[name]) {
             setErrors(prev => ({...prev, [name]: null}));
         }
@@ -97,7 +85,6 @@ export default function PatientRegistry() {
         if (dob > today) newErrors.dateOfBirth = "Date of birth cannot be in the future.";
         if (dob < minDate) newErrors.dateOfBirth = "Date of birth cannot be older than 120 years.";
 
-        // Final check on submit to ensure they actually finished typing all 12 characters
         const insuranceRegex = /^\d{8}[A-Z]\d{3}$/;
         if (!insuranceRegex.test(formData.insuranceNumber)) {
             newErrors.insuranceNumber = "Incomplete format. Must be exactly 12 characters (e.g., 12123456A123).";
@@ -159,7 +146,7 @@ export default function PatientRegistry() {
     `;
 
     return (
-        <Layout>
+        <>
             <div className="p-6 md:p-12 max-w-[1000px] mx-auto space-y-8">
                 <header>
                     <h1 className="text-3xl md:text-4xl font-headline font-bold text-on-surface dark:text-on-surface-dark tracking-tight mb-2">
@@ -183,7 +170,7 @@ export default function PatientRegistry() {
 
                     <form onSubmit={handleSubmit} className="space-y-8">
 
-                        {/* Core IDAT */}
+                        {/* Section 1: Core IDAT */}
                         <div>
                             <h3 className="flex items-center gap-2 font-headline text-lg font-bold text-primary dark:text-primary-dark mb-4 border-b border-outline-variant/20 dark:border-outline-variant-dark/20 pb-2">
                                 <span className="material-symbols-outlined">badge</span> Core Identity
@@ -235,7 +222,7 @@ export default function PatientRegistry() {
                             </div>
                         </div>
 
-                        {/* Contact Info */}
+                        {/* Section 2: Contact Info (Split Address) */}
                         <div>
                             <h3 className="flex items-center gap-2 font-headline text-lg font-bold text-primary dark:text-primary-dark mb-4 border-b border-outline-variant/20 dark:border-outline-variant-dark/20 pb-2">
                                 <span className="material-symbols-outlined">contact_mail</span> Contact Information
@@ -290,7 +277,7 @@ export default function PatientRegistry() {
                             </div>
                         </div>
 
-                        {/* Insurance */}
+                        {/* Section 3: Insurance */}
                         <div>
                             <h3 className="flex items-center gap-2 font-headline text-lg font-bold text-primary dark:text-primary-dark mb-4 border-b border-outline-variant/20 dark:border-outline-variant-dark/20 pb-2">
                                 <span className="material-symbols-outlined">health_and_safety</span> Insurance
@@ -340,6 +327,6 @@ export default function PatientRegistry() {
                     </form>
                 </div>
             </div>
-        </Layout>
+        </>
     );
 }
