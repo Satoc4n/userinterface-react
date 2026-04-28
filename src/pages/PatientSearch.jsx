@@ -1,6 +1,8 @@
 import {useState} from 'react';
 import {Link} from 'react-router-dom';
 
+// @TODO Implement testing and logging
+
 // Simulated JSON response from the Interface Layer
 const MOCK_DATABASE = [
     {
@@ -69,8 +71,8 @@ export default function PatientSearch() {
 
         const query = searchQuery.toLowerCase();
 
-        // Primarily search by First Name or Last Name (per requirements)
-        // We also added PID search just to make it extra robust!
+        // Primarily search by First Name or Last Name
+        // We also added PID search just to make it extra robust
         return (
             patient.firstName.toLowerCase().includes(query) ||
             patient.lastName.toLowerCase().includes(query) ||
