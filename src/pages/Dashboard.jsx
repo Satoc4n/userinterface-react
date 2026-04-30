@@ -45,7 +45,7 @@ export default function Dashboard() {
                             <span className="material-symbols-outlined text-[16px]">calendar_today</span>
                             <span>{formattedDate}</span>&nbsp;·&nbsp;
                             <span className="material-symbols-outlined text-[16px]">nest_clock_farsight_analog</span>
-                            <span>{formattedTime}</span>&nbsp;· System Normal
+                            <span>{formattedTime}</span>&nbsp;·&nbsp; System Normal
                         </p>
                     </div>
                 </header>
