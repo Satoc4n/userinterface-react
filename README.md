@@ -82,6 +82,7 @@ Once the server is running, Vite will display the local address in the terminal 
 Open your preferred web browser and navigate to this address. 
 
 (Tested on Vivaldi Browser, Chrome 146) Windows 10, Build 19045
+
 (Tested on Firefox Browser, Firefox 125.0.2) Ubuntu 24.04 LTS
 
 ---
@@ -90,7 +91,7 @@ Open your preferred web browser and navigate to this address.
 [English Version](#english-version)
 ## Deutsche Version
 
-Diese Anleitung beschreibt den Ablauf zur Einrichtung und Ausführung des Apps (Frontend)
+Diese Anleitung beschreibt den Ablauf zur Einrichtung und Ausführung des Apps
 auf ihrem lokalen Computer.
 ---
 ### Voraussetzungen
@@ -170,4 +171,5 @@ Wenn ```npm run dev``` erfolgreich läuft, wird die lokale Adresse in der Konsol
 Öffnen Sie Ihren Browser und rufen Sie diese Adresse auf. 
 
 (Getested on Vivaldi Browser, Chrome 146) Windows 10, Build 19045
+
 (Getested on Firefox Browser, Firefox 125.0.2) Ubuntu 24.04 LTS
