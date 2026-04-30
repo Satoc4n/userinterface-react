@@ -1,4 +1,4 @@
-[Deutsche Version](#deutsche-version)
+[Auf Deutsch](#deutsche-version)
 
 ## English Version
 
@@ -41,7 +41,7 @@ userinterface-react/             # Project Root
 #### 1. Clone the repo
 Open your terminal or command prompt and clone the project to your local machine:
 ```bash
-git clone https://gitlab.reutlingen-university.de/ss2026-mis-triage-project/userinterfacebrowser.git
+git clone https://gitlab.reutlingen-university.de/ss2026-mis-triage-project/userinterfacebrowser.git userinterfacebrowser
 ```
 #### 2. Navigate to project root that we just cloned
 ```bash
@@ -112,7 +112,7 @@ userinterface-react/             # Project Root
 #### 1. Repo klonen
 In terminal:
 ```bash
-git clone https://gitlab.reutlingen-university.de/ss2026-mis-triage-project/userinterfacebrowser.git
+git clone https://gitlab.reutlingen-university.de/ss2026-mis-triage-project/userinterfacebrowser.git userinterfacebrowser
 ```
 #### 2. Ins Stammverzeichnis (Root directory) wechseln
 ```bash
