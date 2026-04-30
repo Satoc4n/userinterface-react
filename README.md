@@ -3,13 +3,28 @@
 ## English Version
 
 This guide outlines the complete process for setting up and running the 
-WebUI prototype, including both the React frontend and the Node.js backend server, 
-on your local machine. 
+WebUI prototype.
 ---
 ### Prerequisites
 Before you begin, ensure you have the following installed on your system:
 * **Node.js** (Version 18.0 or higher) - [Download here](https://nodejs.org/)
+  * Windows users can directly download the prebuilt Node.js. 
+  * Linux (Ubuntu/Debian) choose nvm and npm:
+    ```bash
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.4/install.sh | bash
+    . "$HOME/.nvm/nvm.sh"
+    nvm install 24
+    ```
+    * If done correctly you should see v24.x when you run ```node -v``` and 11.x when you run ```npm -v```.
 * **Git** - [Download here](https://git-scm.com/)
+  * ***You can also directly copy the source file to your local machine.***
+  * Linux (Ubuntu/Debian): If Git is not installed, run the following commands:
+    ```bash
+    sudo apt update
+    sudo apt install git
+    
+  * Note: If you receive "404 Not Found" during installation, run ```sudo apt update```
+  again to refresh your package lists.
 ---
 ### Project Structure
 
@@ -66,7 +81,8 @@ Once the server is running, Vite will display the local address in the terminal 
 
 Open your preferred web browser and navigate to this address. 
 
-(Tested on Vivaldi Browser, Chrome 146)
+(Tested on Vivaldi Browser, Chrome 146) Windows 10, Build 19045
+(Tested on Firefox Browser, Firefox 125.0.2) Ubuntu 24.04 LTS
 
 ---
 
@@ -80,7 +96,23 @@ auf ihrem lokalen Computer.
 ### Voraussetzungen
 Bevor Sie beginnen, müssen Sie die folgenden Softwares installieren:
 * **Node.js** (Version 18.0 or höher) - [Download here](https://nodejs.org/)
+* * Windows Nutzer können den Installer für Node.js direkt herunterladen. 
+  * Linux (Ubuntu/Debian) nvm und npm installieren:
+    ```bash
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.4/install.sh | bash
+    . "$HOME/.nvm/nvm.sh"
+    nvm install 24
+    ```
+    * Wenn Sie ```node -v``` ausführen, muss v24.x angezeigt werden und 11.x wenn Sie ```npm -v``` ausführen.
 * **Git** - [Download here](https://git-scm.com/)
+  * ***Sie können die Source-Datei auch direkt auf Ihren lokalen Computer kopieren.***
+  * Linux (Ubuntu/Debian): Falls git nicht installiert ist, führen Sie die folgenden Befehle aus:
+    ```bash
+    sudo apt update
+    sudo apt install git
+    
+  * Hinweis: Falls Sie während der Installation einen "404 Not Found" Fehler erhalten, führen Sie 
+  ```sudo apt update``` aus, um Ihre Paketlisten neu zu aktualisieren.
 ---
 ### Projektstruktur
 Deutsche Version folgt in Kürze
@@ -137,4 +169,5 @@ Wenn ```npm run dev``` erfolgreich läuft, wird die lokale Adresse in der Konsol
 
 Öffnen Sie Ihren Browser und rufen Sie diese Adresse auf. 
 
-(Getestet mit Vivaldi Browser, Chrome 146)
+(Getested on Vivaldi Browser, Chrome 146) Windows 10, Build 19045
+(Getested on Firefox Browser, Firefox 125.0.2) Ubuntu 24.04 LTS
