@@ -1,6 +1,7 @@
 import {useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import {useTranslation} from 'react-i18next';
+import log from '../utils/logger.js';
 
 export default function Login() {
     const navigate = useNavigate();
@@ -14,6 +15,9 @@ export default function Login() {
     };
 
     const handleRealLogin = (e) => {
+        e.preventDefault();
+        log.info('User attempted login ', {email});
+        log.info('We dont have a backend anyway :P redirecting to dashboard');
         e.preventDefault();
         navigate('/dashboard');
     };

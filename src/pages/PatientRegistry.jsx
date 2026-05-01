@@ -1,5 +1,6 @@
 import {useState} from 'react';
 import {useTranslation} from 'react-i18next';
+import log from '../utils/logger.js';
 
 // Added translation function
 export default function PatientRegistry() {
@@ -105,13 +106,13 @@ export default function PatientRegistry() {
         executeSubmission();
     };
 
-1    /* Old submission function that is just for demo purposes
-    // Submit function
-    const executeSubmission = () => {
+    // New submit function
+    const executeSubmission = async () => {
         setIsSubmitting(true);
-        setSuccessMessage('');
-        setShowWarning(false); // Hide the warning box if it was open
+        setSuccessMessage("");
+        setShowWarning(false);
 
+        // Set the fields
         let addressObj = null;
         if (formData.street || formData.houseNumber || formData.city || formData.postalCode) {
             addressObj = {
@@ -133,49 +134,19 @@ export default function PatientRegistry() {
             email: formData.email || null
         };
 
+        // @TODO Check again if there are any errors
         // Strip out all keys that have a value of `null` or `""`
         const cleanPayload = Object.fromEntries(
             Object.entries(rawPayload).filter(([_, value]) => value !== null && value !== "")
         );
-        */
-        // New submit function
-        const executeSubmission = async () => {
-            setIsSubmitting(true);
-            setSuccessMessage("");
-            setShowWarning(false);
 
-            // Set the fields
-            let addressObj = null;
-            if (formData.street || formData.houseNumber || formData.city || formData.postalCode) {
-                addressObj = {
-                    street: `${formData.street} ${formData.houseNumber}`.trim() || null,
-                    city: formData.city || null,
-                    postal_code: formData.postalCode ? parseInt(formData.postalCode) : null
-                };
-            }
+        // Post the data
+        try {
+            // log.info for general tracking
+            log.info('Attempting to register new patient...', cleanPayload);
 
-            // Raw payload
-            const rawPayload = {
-                last_name: formData.lastName,
-                first_name: formData.firstName,
-                date_of_birth: formData.dateOfBirth,
-                insurance_number: formData.insuranceNumber,
-                gender: formData.gender || null,
-                address: addressObj,
-                phone: formData.phone || null,
-                email: formData.email || null
-            };
-
-            // @TODO Check again if there are any errors
-            // Strip out all keys that have a value of `null` or `""`
-            const cleanPayload = Object.fromEntries(
-                Object.entries(rawPayload).filter(([_, value]) => value !== null && value !== "")
-            );
-
-            // Post the data
-            try {
             // Send the POST request to the backend
-            const response = await fetch('http://localhost:3000/patients/register', {
+            const response = await fetch('http://localhost:8000/patients/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -186,6 +157,8 @@ export default function PatientRegistry() {
             // Handle the specific HTTP Status Codes from your Interface Spec
             if (response.status === 201) {
                 const data = await response.json();
+                // log.debug for more detailed logging
+                log.debug('Registration successful (201), received data:', data);
                 // We can even use the returned auto-generated PID from the database
                 setSuccessMessage(`${t('registry.success')} ${formData.lastName}, ${formData.firstName} (ID: ${data.pid})`);
 
@@ -196,15 +169,20 @@ export default function PatientRegistry() {
                     phone: '', email: '', insuranceNumber: ''
                 });
             } else if (response.status === 422) {
+                // log.warn for failures
+                log.warn('Server rejected data (422)', {status: response.status});
                 // Handle logic errors (for example the bad insurance format caught by backend)
                 alert("Server rejected the data. Please check your inputs.");
             } else if (response.status === 400) {
+                log.warn('Bad request (400)', {status: response.status});
                 alert("Bad Request. Malformed JSON.");
             } else {
+                log.warn('Unexpected server response', response.status);
                 alert("An unexpected server error occurred.");
             }
 
         } catch (error) {
+            log.error('Connection failed.');
             console.error("Network Error:", error);
             alert("Could not connect to the server. Is the backend running?");
         } finally {
@@ -213,27 +191,6 @@ export default function PatientRegistry() {
 
         // Print to console
         console.log("Sending Clean JSON DTO to Server:", JSON.stringify(cleanPayload, null, 2));
-
-        /* Dont need anymore
-        // Simulate API response time
-        setTimeout(() => {
-            setIsSubmitting(false);
-            setSuccessMessage(`${t('registry.success')} ${formData.lastName}, ${formData.firstName}`);
-            setFormData({
-                firstName: '',
-                lastName: '',
-                dateOfBirth: '',
-                gender: '',
-                street: '',
-                houseNumber: '',
-                postalCode: '',
-                city: '',
-                phone: '',
-                email: '',
-                insuranceNumber: ''
-            });
-        }, 1200);
-        */
     };
 
     const inputClass = (fieldName) => `w-full bg-surface-container-high dark:bg-surface-container-high-dark border p-3 rounded-lg text-on-surface dark:text-on-surface-dark font-body focus:outline-none transition-colors ${errors[fieldName] ? 'border-red-500 focus:ring-1 focus:ring-red-500' : 'border-transparent focus:ring-2 focus:ring-primary'}`;
