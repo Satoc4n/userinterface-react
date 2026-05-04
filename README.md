@@ -87,6 +87,24 @@ Open your preferred web browser and navigate to this address.
 
 ---
 
+### Logging
+This application uses the loglevel library for client-side logging, 
+configured centrally in src/utils/logger.js.
+
+#### Configuration
+* Development ```npm run dev```: The log level is set to trace, allowing all logs to be 
+printed on the browser console.
+* Production ```npm run build```: Vite dynamically restricts the log level to warn. 
+This ensures that sensitive data is completely hidden from end users in the live enviroment.
+
+#### Log Format
+The default is overridden to automatically inject a timestamp and the log severity level:
+```[HH:MM:SS.mmm] LEVEL: Message```
+
+Example: ```[10:42:12.725] ERROR: Connection failed.```
+
+---
+
 ---
 [English Version](#english-version)
 ## Deutsche Version
@@ -173,3 +191,21 @@ Wenn ```npm run dev``` erfolgreich läuft, wird die lokale Adresse in der Konsol
 (Getested on Vivaldi Browser, Chrome 146) Windows 10, Build 19045
 
 (Getested on Firefox Browser, Firefox 125.0.2) Ubuntu 24.04 LTS
+
+---
+
+### Logging
+Für das Logging der ausgehenden Requests und Fehler im Frontend wird die Bibliothek 
+***loglevel*** verwendet (src/utils/logger.js).
+
+#### Konfiguration
+* Dev: ```npm run dev```: Das Log-level ist auf **trace** gesetzt. Alle Systemereignisse 
+werden in der Browser Konsole gezeigt.
+* Production ```npm run build```: Vite setzt das Log-level beim Kompilieren automatisch 
+auf **warn**. So werden sichergestellt, dass sensible Daten im Live Betrieb verborgen bleiben.
+
+#### Log Format
+Das Standard Format wurde überschrieben, um automatisch einen Zeitstempel und das 
+Log-level als Präfix einzufügen: ```[HH:MM:SS.mmm] LEVEL: Message```.
+
+Beispiel: ```[10:42:12.725] ERROR: Connection failed.```
