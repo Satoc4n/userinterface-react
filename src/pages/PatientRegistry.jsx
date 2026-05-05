@@ -154,7 +154,7 @@ export default function PatientRegistry() {
                 body: JSON.stringify(cleanPayload)
             });
 
-            // Handle the specific HTTP Status Codes from your Interface Spec
+            // Handle the specific HTTP Status Codes
             if (response.status === 201) {
                 const data = await response.json();
                 // log.debug for more detailed logging
